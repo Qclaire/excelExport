@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import ReactExport from "react-data-export";
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
-function App() {
+function ExportWorkBook({ data }) {
+  const sheets = Object.keys(data);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <ExcelFile>
+          {sheets &&
+            sheets.map((sheet) => {
+              const name = sheet
+                .split("_")
+                .map((part) => part.trim().toUpperCase())
+                .join(" ");
+              return (
+                <ExcelSheet key={sheet} dataSet={data[sheet]} name={name} />
+              );
+            })}
+        </ExcelFile>
       </header>
     </div>
   );
 }
 
-export default App;
+export default ExportWorkBook;
